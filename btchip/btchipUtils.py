@@ -23,7 +23,7 @@ from btchipHelpers import *
 
 def compress_public_key(publicKey):
 	if publicKey[0] == 0x04:
-		if (publicKey[64] & 1) <> 0:
+		if (publicKey[64] & 1) != 0:
 			prefix = 0x03
 		else:
 			prefix = 0x02
@@ -64,16 +64,16 @@ def get_regular_input_script(sigHashtype, publicKey):
 def write_pushed_data_size(data, buffer):
 	if (len(data) > 0xffff):
 		raise BTChipException("unsupported encoding")
-        if (len(data) < 0x4c):
-		buffer.append(len(data))
-        elif (len(data) > 255):
-                buffer.append(0x4d)
-                buffer.append(len(data) & 0xff)
-                buffer.append((len(data) >> 8) & 0xff)
-        else:
-                buffer.append(0x4c)
-		buffer.append(len(data))
-        return buffer
+		if (len(data) < 0x4c):
+			buffer.append(len(data))
+		elif (len(data) > 255):
+			buffer.append(0x4d)
+			buffer.append(len(data) & 0xff)
+			buffer.append((len(data) >> 8) & 0xff)
+		else:
+			buffer.append(0x4c)
+			buffer.append(len(data))
+		return buffer
 
 
 def get_p2sh_input_script(redeemScript, sigHashtypeList):

@@ -95,7 +95,7 @@ class bitcoinTransaction:
 			offset = 0
 			self.version = data[offset:offset + 4]
 			offset += 4
-			if (data[offset] == 0) and (data[offset + 1] <> 0):
+			if (data[offset] == 0) and (data[offset + 1] != 0):
 				offset += 2
 				self.witness = True
 			inputSize = readVarint(data, offset)

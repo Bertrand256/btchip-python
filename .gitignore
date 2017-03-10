@@ -1,2 +1,4 @@
 *.pyc
-
+build
+btchip_python.egg-info
+dist
