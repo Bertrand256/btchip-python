@@ -99,7 +99,7 @@ class btchip:
 
 	def verifyPin(self, pin):
 		if isinstance(pin, str):
-			pin = pin.encode('utf-8')		
+			pin = pin.encode('utf-8')
 		apdu = [ self.BTCHIP_CLA, self.BTCHIP_INS_VERIFY_PIN, 0x00, 0x00, len(pin) ]
 		apdu.extend(bytearray(pin))
 		self.dongle.exchange(bytearray(apdu))
@@ -430,12 +430,12 @@ class btchip:
 				dataLength = blockLength
 			else:
 				dataLength = len(message) - offset
-			params.extend(bytearray(message[offset : offset + dataLength]))
+			params.extend(bytearray(message[offset : offset + dataLength], 'utf8'))
 			apdu = [ self.BTCHIP_CLA, self.BTCHIP_INS_SIGN_MESSAGE, 0x00, p2 ]
 			apdu.append(len(params))
 			apdu.extend(params)
 			response = self.dongle.exchange(bytearray(apdu))
-			encryptedOutputData = encryptedOutputData + response[1 : 1 + response[0]]
+			encryptedOutputData = encryptedOutputData + response[1 : 1 + response[0]].decode("utf-8")
 			offset += blockLength
 		result['confirmationNeeded'] = response[1 + response[0]] != 0x00
 		result['confirmationType'] = response[1 + response[0]]
