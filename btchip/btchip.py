@@ -430,12 +430,12 @@ class btchip:
 				dataLength = blockLength
 			else:
 				dataLength = len(message) - offset
-			params.extend(bytearray(message[offset : offset + dataLength], 'utf8'))
+				params.extend(bytearray(message[offset: offset + dataLength]))
 			apdu = [ self.BTCHIP_CLA, self.BTCHIP_INS_SIGN_MESSAGE, 0x00, p2 ]
 			apdu.append(len(params))
 			apdu.extend(params)
 			response = self.dongle.exchange(bytearray(apdu))
-			encryptedOutputData = encryptedOutputData + response[1 : 1 + response[0]].decode("utf-8")
+			encryptedOutputData = encryptedOutputData + response[1 : 1 + response[0]].decode("ascii")
 			offset += blockLength
 		result['confirmationNeeded'] = response[1 + response[0]] != 0x00
 		result['confirmationType'] = response[1 + response[0]]
