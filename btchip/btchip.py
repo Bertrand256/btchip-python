@@ -415,9 +415,9 @@ class btchip:
 			self.resolvePublicKeysInPath(path)				
 		result = {}
 		offset = 0
-		encryptedOutputData = ""
+		encryptedOutputData = b""
 		while (offset < len(message)):
-			params = [];
+			params = []
 			if offset == 0:
 				params.extend(donglePath)
 				params.append((len(message) >> 8) & 0xff)
@@ -435,7 +435,7 @@ class btchip:
 			apdu.append(len(params))
 			apdu.extend(params)
 			response = self.dongle.exchange(bytearray(apdu))
-			encryptedOutputData = encryptedOutputData + response[1 : 1 + response[0]].decode("ascii")
+			encryptedOutputData = encryptedOutputData + response[1 : 1 + response[0]]
 			offset += blockLength
 		result['confirmationNeeded'] = response[1 + response[0]] != 0x00
 		result['confirmationType'] = response[1 + response[0]]
